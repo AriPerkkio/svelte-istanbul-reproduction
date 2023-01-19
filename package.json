@@ -1,0 +1,27 @@
+{
+  "name": "svelte-istanbul-reproduction",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node ./debug-svelte-sourcemaps.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "istanbul-lib-coverage": "^3.2.0",
+    "istanbul-lib-instrument": "^5.2.1",
+    "istanbul-lib-report": "^3.0.0",
+    "istanbul-lib-source-maps": "^4.0.1",
+    "istanbul-reports": "^3.1.5",
+    "jsdom": "^21.0.0",
+    "svelte": "*"
+  },
+  "pnpm": {
+    "overrides": {
+      "svelte": "link:../svelte"
+    }
+  }
+}
