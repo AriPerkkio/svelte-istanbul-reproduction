@@ -8,6 +8,7 @@ import libCoverage from "istanbul-lib-coverage";
 import { createInstrumenter } from "istanbul-lib-instrument";
 import { createSourceMapStore } from "istanbul-lib-source-maps";
 import { createContext } from "istanbul-lib-report";
+import { decode } from "@jridgewell/sourcemap-codec";
 
 import { mkdir, rmIfExists, writeGeneratedFile } from "./utils.mjs";
 
@@ -20,6 +21,7 @@ globalThis.document = window.document;
 
 const filename = "repro.svelte";
 const sources = readFileSync(path.resolve(filename), "utf8");
+console.log("");
 
 /*
  * Transpile Svelte to JavaScript
@@ -33,6 +35,8 @@ const { js: transpiled } = svelte.compile(sources, {
 
 writeGeneratedFile("transpiled.js", transpiled.code);
 writeGeneratedFile("transpiled.js.map", transpiled.map);
+writeGeneratedFile("transpiled.mappings.json", decode(transpiled.map.mappings));
+console.log("");
 
 /*
  * Instrument JavaScript with Istanbul
@@ -53,6 +57,7 @@ const instrumented = {
 
 writeGeneratedFile("instrumented.js", instrumented.code);
 writeGeneratedFile("instrumented.js.map", instrumented.map);
+writeGeneratedFile("instrumented.mappings.json", decode(instrumented.map.mappings));
 
 /*
  * Run the instrumented JavaScript to get parts of code covered

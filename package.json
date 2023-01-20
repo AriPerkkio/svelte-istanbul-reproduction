@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@jridgewell/sourcemap-codec": "^1.4.14",
     "istanbul-lib-coverage": "^3.2.0",
     "istanbul-lib-instrument": "^5.2.1",
     "istanbul-lib-report": "^3.0.0",
