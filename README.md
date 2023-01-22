@@ -20,7 +20,7 @@ Remove following from `package.json` if local Svelte compiler is not present:
 
 ### Decoded transpiled.js.map
 
-```json
+```js
 75 | [[26, 0, 15, 7], [29, 0, 15, 12], [33, 0, 15, 13], [39, 0, 15, 19], [44, 0, 15, 24], [45, 0, 15, 25]],
 ```
 
@@ -40,19 +40,19 @@ transpiled.js.map |                          | |    |    |     |
 ### Map to repro.svelte
 
 ```js
-16                  |  {#if users.length === 0}
-transpiled.js.map   |       |   | |    |     |
-[26, 0, 15, 7]      |       ^   | |    |     |
-[29, 0, 15, 12]     |           ^ |    |     |
-[33, 0, 15, 13]     |             ^    |     |
-[39, 0, 15, 19]     |                  ^     |
-[44, 0, 15, 24]     |                        ^
-[45, 0, 15, 25]     |                        ^
+16                |  {#if users.length === 0}
+transpiled.js.map |       |   | |    |     |
+[26, 0, 15, 7]    |       ^   | |    |     |
+[29, 0, 15, 12]   |           ^ |    |     |
+[33, 0, 15, 13]   |             ^    |     |
+[39, 0, 15, 19]   |                  ^     |
+[44, 0, 15, 24]   |                        ^
+[45, 0, 15, 25]   |                        ^
 ```
 
 ### Decoded instrumented.js.map
 
-```json
+```js
 1963 |  [[54, 0, 15, 7], [86, 0, 15, 12], [90, 0, 15, 13, 3], [96, 0, 15, 19], [101, 0, 15, 24], [102, 0, 15, 25]]
 1964 |  [[2, 0, 15, 25]]
 ```
@@ -108,14 +108,14 @@ instrumented.js.map |       ^   | |    |     |
       }
     ],
     "line": 75
-    },
+  }
 }
 ```
 
 ```js
-75                        | let if_block = /*users*/ ctx[0].length === 0 && create_if_block(ctx);
-branchMap["4"] location 1 |                          ^^^^^^^^^^^^^^^^^^^    |||||||||||||||||||||
-branchMap["4"] location 2 |                                                 ^^^^^^^^^^^^^^^^^^^^^
+75           | let if_block = /*users*/ ctx[0].length === 0 && create_if_block(ctx);
+locations[1] |                          ^^^^^^^^^^^^^^^^^^^    |||||||||||||||||||||
+locations[2] |                                                 ^^^^^^^^^^^^^^^^^^^^^
 ```
 
 ### Coverage map after remapping
@@ -138,12 +138,12 @@ branchMap["4"] location 2 |                                                 ^^^^
       "end": { "line": 16, "column": null }
       }
     ]
-    }
+  }
 }
 ```
 
 ```js
-16                        |  {#if users.length === 0}
-branchMap["2"] location 1 |       ^^^^^^^^^^^^^^^^^^
-branchMap["2"] location 2 |                        ^// Implicit else
+16           |  {#if users.length === 0}
+locations[1] |       ^^^^^^^^^^^^^^^^^^
+locations[2] |                        ^// Implicit else
 ```
