@@ -8,9 +8,8 @@ import libCoverage from "istanbul-lib-coverage";
 import { createInstrumenter } from "istanbul-lib-instrument";
 import { createSourceMapStore } from "istanbul-lib-source-maps";
 import { createContext } from "istanbul-lib-report";
-import { decode } from "@jridgewell/sourcemap-codec";
 
-import { mkdir, rmIfExists, writeGeneratedFile } from "./utils.mjs";
+import { mkdir, rmIfExists, writeGeneratedFile, writeMappings } from "./utils.mjs";
 
 // Prepare
 rmIfExists("./coverage");
@@ -35,7 +34,7 @@ const { js: transpiled } = svelte.compile(sources, {
 
 writeGeneratedFile("transpiled.js", transpiled.code);
 writeGeneratedFile("transpiled.js.map", transpiled.map);
-writeGeneratedFile("transpiled.mappings.json", decode(transpiled.map.mappings));
+writeMappings("transpiled", transpiled.map.mappings);
 console.log("");
 
 /*
@@ -57,7 +56,7 @@ const instrumented = {
 
 writeGeneratedFile("instrumented.js", instrumented.code);
 writeGeneratedFile("instrumented.js.map", instrumented.map);
-writeGeneratedFile("instrumented.mappings.json", decode(instrumented.map.mappings));
+writeMappings("instrumented", instrumented.map.mappings);
 
 /*
  * Run the instrumented JavaScript to get parts of code covered
@@ -68,9 +67,7 @@ new SvelteComponent({ target: document.body, props: { users: ["John Doe"] } });
 /*
  * Collect coverage from instrumented JavaScript
  */
-const collectedCoverage = libCoverage.createCoverageMap(
-  globalThis.__coverage__
-);
+const collectedCoverage = libCoverage.createCoverageMap(globalThis.__coverage__);
 writeGeneratedFile("coverage.json", collectedCoverage);
 
 /*
@@ -86,6 +83,4 @@ const context = createContext({
   coverageMap,
   sourceFinder: sourceMapStore.sourceFinder,
 });
-["json", "html", "text"].forEach((name) =>
-  reports.create(name).execute(context)
-);
+["json", "html", "text"].forEach((name) => reports.create(name).execute(context));

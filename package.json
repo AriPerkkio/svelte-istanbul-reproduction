@@ -18,11 +18,15 @@
     "istanbul-lib-source-maps": "^4.0.1",
     "istanbul-reports": "^3.1.5",
     "jsdom": "^21.0.0",
+    "prettier": "^2.8.3",
     "svelte": "*"
   },
   "pnpm": {
     "overrides": {
       "svelte": "link:../svelte"
     }
+  },
+  "prettier": {
+    "printWidth": 100
   }
 }

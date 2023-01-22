@@ -11,6 +11,7 @@ specifiers:
   istanbul-lib-source-maps: ^4.0.1
   istanbul-reports: ^3.1.5
   jsdom: ^21.0.0
+  prettier: ^2.8.3
   svelte: link:../svelte
 
 dependencies:
@@ -21,6 +22,7 @@ dependencies:
   istanbul-lib-source-maps: 4.0.1
   istanbul-reports: 3.1.5
   jsdom: 21.0.0
+  prettier: 2.8.3
   svelte: link:../svelte
 
 packages:
@@ -715,6 +717,12 @@ packages:
   /prelude-ls/1.1.2:
     resolution: {integrity: sha512-ESF23V4SKG6lVSGZgYNpbsiaAkdab6ZgOxe52p7+Kid3W3u3bxR4Vfd/o21dmN7jSt0IwgZ4v5MUd26FEtXE9w==}
     engines: {node: '>= 0.8.0'}
+    dev: false
+
+  /prettier/2.8.3:
+    resolution: {integrity: sha512-tJ/oJ4amDihPoufT5sM0Z1SKEuKay8LfVAMlbbhnnkvt6BUserZylqo2PN+p9KeljLr0OHa2rXHU1T8reeoTrw==}
+    engines: {node: '>=10.13.0'}
+    hasBin: true
     dev: false
 
   /psl/1.9.0:
