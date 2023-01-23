@@ -58,23 +58,27 @@ export function writeRemapping(namePrefix, generated, sourcemap) {
     for (const [start, end] of mappingPairs) {
       const generatedPosition = {
         start: { line: 1 + generatedRowIndex, column: 1 + start[0] },
-        end: { line: 1 + generatedRowIndex, column: 1 + end[0] },
+        end: end ? { line: 1 + generatedRowIndex, column: 1 + end[0] } : undefined,
       };
       const sourcePosition = {
         start: { line: 1 + start[2], column: 1 + start[3] },
-        end: { line: 1 + end[2], column: 1 + end[3] },
+        end: end ? { line: 1 + end[2], column: 1 + end[3] } : undefined,
       };
 
       const generatedCodeFrame = codeFrameColumns(generated, generatedPosition);
       const sourceCodeFrame = codeFrameColumns(sources, sourcePosition);
 
+      // prettier-ignore
       markdownRows.push(`
-Source:
+Source, (${sourcePosition.start.line}, ${sourcePosition.start.column})${sourcePosition.end ? ` to (${sourcePosition.end.line}, ${sourcePosition.end.column})` : ''}:
+Exists in sources? ${existsInSources(sources, sourcePosition) ? 'Yes ✅' : 'No ❌'}
+
 \`\`\`js
 ${sourceCodeFrame}
 \`\`\`
 
-Generated:
+Generated, (${generatedPosition.start.line}, ${generatedPosition.start.column})${generatedPosition.end ? ` to (${generatedPosition.end.line}, ${generatedPosition.end.column})` : ''}:
+
 \`\`\`js
 ${generatedCodeFrame}
 \`\`\`
@@ -82,7 +86,16 @@ ${generatedCodeFrame}
     }
   }
 
-  const markdown = markdownRows.map((row) => row.trim()).join(`${EOL}${EOL}___${EOL}${EOL}`);
+  const markdown = markdownRows
+    .map((row, index) => `## ${1 + index} ${row.trim()}`)
+    .join(`${EOL}${EOL}${"_".repeat(80)}${EOL}${EOL}`);
 
   writeGeneratedFile(`${namePrefix}.remapped.md`, markdown);
+}
+
+function existsInSources(sources, { start }) {
+  const rows = sources.split(EOL);
+  const startCharacter = rows[start.line - 1].charAt(start.column - 1);
+
+  return startCharacter.length !== 0;
 }
