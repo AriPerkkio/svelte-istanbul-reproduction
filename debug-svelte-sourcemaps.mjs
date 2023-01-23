@@ -32,6 +32,9 @@ const { js: transpiled } = svelte.compile(sources, {
   enableSourcemap: true,
 });
 
+// Replace Svelte's tabs with spaces for easier debugging. Should not affect results anyhow.
+transpiled.code = transpiled.code.replaceAll("\t", " ");
+
 writeGeneratedFile("transpiled.js", transpiled.code);
 writeGeneratedFile("transpiled.js.map", transpiled.map);
 writeMappings("transpiled", transpiled.map.mappings);

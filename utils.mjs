@@ -29,10 +29,11 @@ export function writeGeneratedFile(name, content) {
 
 export function writeMappings(namePrefix, mappings) {
   const decoded = decode(mappings);
-  const withLineNumbers = Object.entries(decoded).reduce(
-    (all, [index, mapping]) => ({ ...all, [`Line ${1 + parseInt(index)}`]: mapping }),
-    {}
-  );
+  const withLineNumbers = Object.entries(decoded).reduce((all, [index, mapping]) => {
+    if (mapping.length === 0) return all;
+
+    return { ...all, [`Line ${1 + parseInt(index)}`]: mapping };
+  }, {});
 
   writeGeneratedFile(`${namePrefix}.mappings.json`, withLineNumbers);
 }
