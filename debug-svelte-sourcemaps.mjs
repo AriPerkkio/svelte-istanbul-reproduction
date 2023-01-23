@@ -9,7 +9,7 @@ import { createInstrumenter } from "istanbul-lib-instrument";
 import { createSourceMapStore } from "istanbul-lib-source-maps";
 import { createContext } from "istanbul-lib-report";
 
-import { mkdir, rmIfExists, writeGeneratedFile, writeMappings } from "./utils.mjs";
+import { mkdir, rmIfExists, writeGeneratedFile, writeMappings, writeRemapping } from "./utils.mjs";
 
 // Prepare
 rmIfExists("./coverage");
@@ -38,6 +38,7 @@ transpiled.code = transpiled.code.replaceAll("\t", " ");
 writeGeneratedFile("transpiled.js", transpiled.code);
 writeGeneratedFile("transpiled.js.map", transpiled.map);
 writeMappings("transpiled", transpiled.map.mappings);
+writeRemapping("transpiled", transpiled.code, transpiled.map);
 console.log("");
 
 /*
@@ -60,6 +61,7 @@ const instrumented = {
 writeGeneratedFile("instrumented.js", instrumented.code);
 writeGeneratedFile("instrumented.js.map", instrumented.map);
 writeMappings("instrumented", instrumented.map.mappings);
+writeRemapping("instrumented", instrumented.code, instrumented.map);
 
 /*
  * Run the instrumented JavaScript to get parts of code covered
