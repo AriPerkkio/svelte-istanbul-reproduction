@@ -29,33 +29,31 @@ Line 16 described below.
 #### Decoded mappings of transpiled.js.map
 
 ```js
-75 | [[26, 0, 15, 7], [29, 0, 15, 12], [33, 0, 15, 13], [39, 0, 15, 19], [44, 0, 15, 24], [45, 0, 15, 25]],
+75 | [[26, 0, 15, 7], [29, 0, 15, 12], [33, 0, 15, 13], [39, 0, 15, 19], [44, 0, 15, 24], [45, 0, 15, 25]]
 ```
+
+Mapping pairs:
+
+- #1 `[26, 0, 15, 7], [29, 0, 15, 12]`
+- #2 `[33, 0, 15, 13], [39, 0, 15, 19]`
+- #3 `[44, 0, 15, 24], [45, 0, 15, 25]`
 
 #### transpiled.js
 
 ```js
 75                | let if_block = /*users*/ ctx[0].length === 0 && create_if_block(ctx);
-transpiled.js.map |                          | |    |    |     |
-[26, 0, 15, 7]    |                          ^ |    |    |     |
-[29, 0, 15, 12]   |                            ^    |    |     |
-[33, 0, 15, 13]   |                                 ^    |     |
-[39, 0, 15, 19]   |                                      ^     |
-[44, 0, 15, 24]   |                                            ^
-[45, 0, 15, 25]   |                                            ^
+Mapping pair #1   |                          ^^^    |    |     |
+Mapping pair #2   |                                 ^^^^^^     |
+Mapping pair #3   |                                            ^
 ```
 
 #### Map to repro.svelte
 
 ```js
 16                |  {#if users.length === 0}
-transpiled.js.map |       |   | |    |     |
-[26, 0, 15, 7]    |       ^   | |    |     |
-[29, 0, 15, 12]   |           ^ |    |     |
-[33, 0, 15, 13]   |             ^    |     |
-[39, 0, 15, 19]   |                  ^     |
-[44, 0, 15, 24]   |                        ^
-[45, 0, 15, 25]   |                        ^
+Mapping pair #1   |       ^^^^^ |    |     |
+Mapping pair #2   |             ^^^^^^     |
+Mapping pair #3   |                        ^
 ```
 
 #### Decoded mappings of instrumented.js.map
@@ -65,34 +63,32 @@ transpiled.js.map |       |   | |    |     |
 1964 |  [[2, 0, 15, 25]]
 ```
 
+Mapping pairs:
+
+- #1 `[54, 0, 15, 7], [86, 0, 15, 12]`
+- #2 `[90, 0, 15, 13, 3], [96, 0, 15, 19]`
+- #3 `[101, 0, 15, 24], [102, 0, 15, 25]`
+- #4 `[2, 0, 15, 25]`
+
 #### instrumented.js
 
 ```js
 1963                |  let if_block = ( /*users*/cov_208gup579f().s[24]++, (cov_208gup579f().b[4][0]++, ctx[0].length === 0) && (cov_208gup579f().b[4][1]++, create_if_block(ctx)));
-instrumented.js.map |                                                      |                              |    |    |     |
-[54, 0, 15, 7]      |                                                      ^                              |    |    |     |
-[86, 0, 15, 12]     |                                                                                     ^    |    |     |
-[90, 0, 15, 13, 3]  |                                                                                          ^    |     |
-[96, 0, 15, 19]     |                                                                                               ^     |
-[101, 0, 15, 24]    |                                                                                                     ^
-[102, 0, 15, 25]    |                                                                                                     ^
-                    |
+Mapping pair #1     |                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^    |    |     |
+Mapping pair #2     |                                                                                          ^^^^^^     |
+Mapping pair #3     |                                                                                                     ^
 1964                |  cov_208gup579f().s[25]++;
-[2, 0, 15, 25]      |  ^
+Mapping pair #4     |  ^
 ```
 
 #### Map to repro.svelte
 
 ```js
 16                  |  {#if users.length === 0}
-instrumented.js.map |       ^   | |    |     |
-[54, 0, 15, 7]      |           ^ |    |     |
-[86, 0, 15, 12]     |             |    |     |
-[90, 0, 15, 13, 3]  |             ^    |     |
-[96, 0, 15, 19]     |                  ^     |
-[101, 0, 15, 24]    |                        ^
-[102, 0, 15, 25]    |                        ^
-[2, 0, 15, 25]      |                        ^
+Mapping pair #1     |       ^^^^^ |    |     |
+Mapping pair #2     |             ^^^^^^     |
+Mapping pair #3     |                        ^
+Mapping pair #4     |                        ^
 ```
 
 #### Coverage map before remapping
@@ -122,7 +118,7 @@ instrumented.js.map |       ^   | |    |     |
 
 ```js
 75                          | let if_block = /*users*/ ctx[0].length === 0 && create_if_block(ctx);
-branchMap["4"].locations[1] |                          ^^^^^^^^^^^^^^^^^^^    |||||||||||||||||||||
+branchMap["4"].locations[1] |                          ^^^^^^^^^^^^^^^^^^^    |                   |
 branchMap["4"].locations[2] |                                                 ^^^^^^^^^^^^^^^^^^^^^
 ```
 
@@ -167,35 +163,33 @@ Line 13 described below.
 ```js
 26 | [[24, 0, 12, 9], [27, 0, 12, 13]]
 35 | [[3, 0, 12, 4], [9, 0, 12, 19]]
-39 | [[62, 0, 12, 9],[65, 0, 12, 13]]
+39 | [[62, 0, 12, 9], [65, 0, 12, 13]]
 ```
+
+Mapping pairs:
+
+- #1 `[24, 0, 12, 9], [27, 0, 12, 13]`
+- #2 `[3, 0, 12, 4], [9, 0, 12, 19]`
+- #3 `[62, 0, 12, 9], [65, 0, 12, 13]`
 
 #### transpiled.js
 
 ```js
 26                |  let t_value = /*user*/ ctx[1] + "";
-transpiled.js.map |                         | |
-[24, 0, 12, 9]    |                         ^ |
-[27, 0, 12, 13]   |                           ^
+Mapping pair #1   |                         ^^^
 35                |   insert(target, li, anchor);
-[3, 0, 12, 4]     |   ^    |
-[9, 0, 12, 19]    |        ^
+Mapping pair #2   |   ^^^^^^
 39                |   if (dirty & /*users*/ 1 && t_value !== (t_value = /*user*/ ctx[1] + "")) set_data(t, t_value);
-[62, 0, 12, 9]    |                                                              ^ |
-[65, 0, 12, 13]   |                                                                ^
+Mapping pair #3   |                                                              ^^^
 ```
 
 #### Map to repro.svelte
 
 ```js
 13                |    <li>{user}</li>
-transpiled.js.map |    |    |  |     |
-[24, 0, 12, 9]    |    |    ^  |     |
-[27, 0, 12, 13]   |    |    |  ^     |
-[3, 0, 12, 4]     |    ^    |  |     |
-[9, 0, 12, 19]    |         |  |     ^
-[62, 0, 12, 9]    |         ^  |
-[65, 0, 12, 13]   |            ^
+Mapping pair #1   |    |    ^^^^     |
+Mapping pair #2   |    ^^^^^^^^^^^^^^^
+Mapping pair #3   |         ^^^^
 ```
 
 #### Decoded mappings of instrumented.js.map
@@ -213,53 +207,58 @@ transpiled.js.map |    |    |  |     |
 1905 | [[6, 0, 12, 13]]
 ```
 
+Mapping pairs:
+
+- #1 `[51, 0, 12, 9, 0],[54, 0, 12, 13]`
+- #2 `[6, 0, 12, 4, 1],[12, 0, 12, 19]`
+- #3 `[6, 0, 12, 19]`
+- #4 `[122, 0, 12, 9, 0],[125, 0, 12, 13]`
+- #5 `[8, 0, 12, 13]`
+- #6 `[8, 0, 12, 13]`
+- #7 `[8, 0, 12, 13, 2]`
+- #8 `[6, 0, 12, 13]`
+- #9 `[8, 0, 12, 13]`
+- #10 `[6, 0, 12, 13]`
+
 #### instrumented.js
 
 ```js
 1878                |  let t_value = ( /*user*/cov_208gup579f().s[3]++, ctx[1] + "");
-instrumented.js.map |                                                   | |
-[51, 0, 12, 9, 0]   |                                                   ^ |
-[54, 0, 12, 13]     |                                                     ^
+Mapping pair #1     |                                                   ^^^
 1892                |      insert(target, li, anchor);
-[6, 0, 12, 4, 1]    |      ^    |
-[12, 0, 12, 19]     |           ^
+Mapping pair #2     |      ^^^^^^
 1893                |      cov_208gup579f().s[8]++;
-[6, 0, 12, 19]      |      ^
+Mapping pair #3     |      ^
 1899                |      if ((cov_208gup579f().b[1][0]++, dirty & /*users*/1) && (cov_208gup579f().b[1][1]++, t_value !== (t_value = /*user*/ctx[1] + ""))) {
-[122, 0, 12, 9, 0]  |                                                                                                                          ^ |
-[125, 0, 12, 13]    |                                                                                                                            ^
+Mapping pair #4     |                                                                                                                          ^^^
 1900                |        cov_208gup579f().b[0][0]++;
-[8, 0, 12, 13]      |        ^
+Mapping pair #5     |        ^
 1901                |        cov_208gup579f().s[10]++;
-[8, 0, 12, 13]      |        ^
+Mapping pair #6     |        ^
 1902                |        set_data(t, t_value);
-[8, 0, 12, 13, 2]   |        ^
+Mapping pair #7     |        ^
 1903                |      } else {
-[6, 0, 12, 13]      |      ^
+Mapping pair #8     |      ^
 1904                |        cov_208gup579f().b[0][1]++;
-[8, 0, 12, 13]      |        ^
+Mapping pair #9     |        ^
 1905                |      }
-[6, 0, 12, 13]      |      ^
+Mapping pair #10    |      ^
 ```
 
 #### Map to repro.svelte
 
 ```js
 13                  |    <li>{user}</li>
-instrumented.js.map |    |    |  |     |
-[51, 0, 12, 9, 0]   |    |    ^  |     |
-[54, 0, 12, 13]     |    |    |  ^     |
-[6, 0, 12, 4, 1]    |    ^    |  |     |
-[12, 0, 12, 19]     |         |  |     ^
-[6, 0, 12, 19]      |         |  |     ^
-[122, 0, 12, 9, 0]  |         ^  |
-[125, 0, 12, 13]    |            ^
-[8, 0, 12, 13]      |            ^
-[8, 0, 12, 13]      |            ^
-[8, 0, 12, 13, 2]   |            ^
-[6, 0, 12, 13]      |            ^
-[8, 0, 12, 13]      |            ^
-[6, 0, 12, 13]      |            ^
+Mapping pair #1     |    |    ^^^^     |
+Mapping pair #2     |    ^^^^^^^^^^^^^^^
+Mapping pair #3     |         |  |     ^
+Mapping pair #4     |         ^^^^
+Mapping pair #5     |            ^
+Mapping pair #6     |            ^
+Mapping pair #7     |            ^
+Mapping pair #8     |            ^
+Mapping pair #9     |            ^
+Mapping pair #10    |            ^
 ```
 
 #### Coverage map before remapping
