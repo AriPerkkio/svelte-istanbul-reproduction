@@ -1,5 +1,7 @@
 [Examples - Working sourcemaps](#working-sourcemaps) | [Examples - Broken sourcemaps](#broken-sourcemaps)
 
+Reproduction / debugging setup for [sveltejs/svelte#7824](https://github.com/sveltejs/svelte/issues/7824).
+
 ```bash
 git clone https://github.com/AriPerkkio/svelte-istanbul-reproduction.git
 cd svelte-istanbul-reproduction
