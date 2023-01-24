@@ -62,24 +62,28 @@ writeGeneratedFile("instrumented.js", instrumented.code);
 writeGeneratedFile("instrumented.js.map", instrumented.map);
 writeMappings("instrumented", instrumented.map.mappings);
 writeRemapping("instrumented", instrumented.code, instrumented.map);
+console.log("");
 
 /*
  * Run the instrumented JavaScript to get parts of code covered
  */
+console.log("Running ./generated/instrumented.js");
 const SvelteComponent = (await import("./generated/instrumented.js")).default;
 new SvelteComponent({ target: document.body, props: { users: ["John Doe"] } });
+console.log("");
 
 /*
  * Collect coverage from instrumented JavaScript
  */
 const collectedCoverage = libCoverage.createCoverageMap(globalThis.__coverage__);
-writeGeneratedFile("coverage.json", collectedCoverage);
+writeGeneratedFile("coverage-pre.json", collectedCoverage);
 
 /*
  * Re-map coverage map of instrumented transpiled JavaScript back to Svelte
  */
 const sourceMapStore = createSourceMapStore();
 const coverageMap = await sourceMapStore.transformCoverage(collectedCoverage);
+writeGeneratedFile("coverage-final.json", coverageMap);
 
 /*
  * Generate reports

@@ -26,7 +26,7 @@ Remove following from `package.json` if local Svelte compiler is not present:
 
 Line 16 described below.
 
-#### Decoded transpiled.js.map
+#### Decoded mappings of transpiled.js.map
 
 ```js
 75 | [[26, 0, 15, 7], [29, 0, 15, 12], [33, 0, 15, 13], [39, 0, 15, 19], [44, 0, 15, 24], [45, 0, 15, 25]],
@@ -58,7 +58,7 @@ transpiled.js.map |       |   | |    |     |
 [45, 0, 15, 25]   |                        ^
 ```
 
-#### Decoded instrumented.js.map
+#### Decoded mappings of instrumented.js.map
 
 ```js
 1963 |  [[54, 0, 15, 7], [86, 0, 15, 12], [90, 0, 15, 13, 3], [96, 0, 15, 19], [101, 0, 15, 24], [102, 0, 15, 25]]
@@ -121,9 +121,9 @@ instrumented.js.map |       ^   | |    |     |
 ```
 
 ```js
-75           | let if_block = /*users*/ ctx[0].length === 0 && create_if_block(ctx);
-locations[1] |                          ^^^^^^^^^^^^^^^^^^^    |||||||||||||||||||||
-locations[2] |                                                 ^^^^^^^^^^^^^^^^^^^^^
+75                          | let if_block = /*users*/ ctx[0].length === 0 && create_if_block(ctx);
+branchMap["4"].locations[1] |                          ^^^^^^^^^^^^^^^^^^^    |||||||||||||||||||||
+branchMap["4"].locations[2] |                                                 ^^^^^^^^^^^^^^^^^^^^^
 ```
 
 #### Coverage map after remapping
@@ -162,24 +162,230 @@ locations[2] |                        ^// Implicit else
 
 Line 13 described below.
 
-#### Decoded transpiled.js.map
+#### Decoded mappings of transpiled.js.map
 
 ```js
+26 | [[24, 0, 12, 9], [27, 0, 12, 13]]
+35 | [[3, 0, 12, 4], [9, 0, 12, 19]]
+39 | [[62, 0, 12, 9],[65, 0, 12, 13]]
 ```
 
 #### transpiled.js
 
 ```js
+26                |  let t_value = /*user*/ ctx[1] + "";
+transpiled.js.map |                         | |
+[24, 0, 12, 9]    |                         ^ |
+[27, 0, 12, 13]   |                           ^
+35                |   insert(target, li, anchor);
+[3, 0, 12, 4]     |   ^    |
+[9, 0, 12, 19]    |        ^
+39                |   if (dirty & /*users*/ 1 && t_value !== (t_value = /*user*/ ctx[1] + "")) set_data(t, t_value);
+[62, 0, 12, 9]    |                                                              ^ |
+[65, 0, 12, 13]   |                                                                ^
 ```
 
 #### Map to repro.svelte
 
-#### Decoded instrumented.js.map
+```js
+13                |    <li>{user}</li>
+transpiled.js.map |    |    |  |     |
+[24, 0, 12, 9]    |    |    ^  |     |
+[27, 0, 12, 13]   |    |    |  ^     |
+[3, 0, 12, 4]     |    ^    |  |     |
+[9, 0, 12, 19]    |         |  |     ^
+[62, 0, 12, 9]    |         ^  |
+[65, 0, 12, 13]   |            ^
+```
+
+#### Decoded mappings of instrumented.js.map
+
+```js
+1878 | [[51, 0, 12, 9, 0],[54, 0, 12, 13]]
+1892 | [[6, 0, 12, 4, 1],[12, 0, 12, 19]]
+1893 | [[6, 0, 12, 19]]
+1899 | [[122, 0, 12, 9, 0],[125, 0, 12, 13]]
+1900 | [[8, 0, 12, 13]]
+1901 | [[8, 0, 12, 13]]
+1902 | [[8, 0, 12, 13, 2]]
+1903 | [[6, 0, 12, 13]]
+1904 | [[8, 0, 12, 13]]
+1905 | [[6, 0, 12, 13]]
+```
 
 #### instrumented.js
 
+```js
+1878                |  let t_value = ( /*user*/cov_208gup579f().s[3]++, ctx[1] + "");
+instrumented.js.map |                                                   | |
+[51, 0, 12, 9, 0]   |                                                   ^ |
+[54, 0, 12, 13]     |                                                     ^
+1892                |      insert(target, li, anchor);
+[6, 0, 12, 4, 1]    |      ^    |
+[12, 0, 12, 19]     |           ^
+1893                |      cov_208gup579f().s[8]++;
+[6, 0, 12, 19]      |      ^
+1899                |      if ((cov_208gup579f().b[1][0]++, dirty & /*users*/1) && (cov_208gup579f().b[1][1]++, t_value !== (t_value = /*user*/ctx[1] + ""))) {
+[122, 0, 12, 9, 0]  |                                                                                                                          ^ |
+[125, 0, 12, 13]    |                                                                                                                            ^
+1900                |        cov_208gup579f().b[0][0]++;
+[8, 0, 12, 13]      |        ^
+1901                |        cov_208gup579f().s[10]++;
+[8, 0, 12, 13]      |        ^
+1902                |        set_data(t, t_value);
+[8, 0, 12, 13, 2]   |        ^
+1903                |      } else {
+[6, 0, 12, 13]      |      ^
+1904                |        cov_208gup579f().b[0][1]++;
+[8, 0, 12, 13]      |        ^
+1905                |      }
+[6, 0, 12, 13]      |      ^
+```
+
 #### Map to repro.svelte
+
+```js
+13                  |    <li>{user}</li>
+instrumented.js.map |    |    |  |     |
+[51, 0, 12, 9, 0]   |    |    ^  |     |
+[54, 0, 12, 13]     |    |    |  ^     |
+[6, 0, 12, 4, 1]    |    ^    |  |     |
+[12, 0, 12, 19]     |         |  |     ^
+[6, 0, 12, 19]      |         |  |     ^
+[122, 0, 12, 9, 0]  |         ^  |
+[125, 0, 12, 13]    |            ^
+[8, 0, 12, 13]      |            ^
+[8, 0, 12, 13]      |            ^
+[8, 0, 12, 13, 2]   |            ^
+[6, 0, 12, 13]      |            ^
+[8, 0, 12, 13]      |            ^
+[6, 0, 12, 13]      |            ^
+```
 
 #### Coverage map before remapping
 
+```js
+"statementMap": {
+  "3": {
+    "start": { "line": 26, "column": 24 },
+    "end": { "line": 26, "column": 35 }
+  },
+  "7": {
+    "start": { "line": 35, "column": 3 },
+    "end": { "line": 35, "column": 30 }
+  },
+  "9": {
+    "start": { "line": 39, "column": 3 },
+    "end": { "line": 39, "column": 97 }
+  },
+  "10": {
+    "start": { "line": 39, "column": 76 },
+    "end": { "line": 39, "column": 97 }
+  }
+},
+"branchMap": {
+  "0": {
+    "loc": {
+      "start": { "line": 39, "column": 3 },
+      "end": { "line": 39, "column": 97 }
+    },
+    "type": "if",
+    "locations": [
+      {
+        "start": { "line": 39, "column": 3 },
+        "end": { "line": 39, "column": 97 }
+      },
+      { "start": {}, "end": {} } // Implicit else
+    ],
+    "line": 39
+  },
+  "1": {
+    "loc": {
+      "start": { "line": 39, "column": 7 },
+      "end": { "line": 39, "column": 74 }
+    },
+    "type": "binary-expr",
+    "locations": [
+      {
+        "start": { "line": 39, "column": 7 },
+        "end": { "line": 39, "column": 26 }
+      },
+      {
+        "start": { "line": 39, "column": 30 },
+        "end": { "line": 39, "column": 74 }
+      }
+    ],
+    "line": 39
+  }
+}
+```
+
+```js
+26                          |  let t_value = /*user*/ ctx[1] + "";
+statementMap["3"]           |                         ^^^^^^^^^^^
+35                          |   insert(target, li, anchor);
+statementMap["7"]           |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+39                          |   if (dirty & /*users*/ 1 && t_value !== (t_value = /*user*/ ctx[1] + "")) set_data(t, t_value);
+statementMap["9"]           |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+statementMap["10"]          |                                                                            ^^^^^^^^^^^^^^^^^^^^^
+branchMap["0"].locations[0] |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+branchMap["1"].locations[0] |       ^^^^^^^^^^^^^^^^^^^                                                
+branchMap["1"].locations[1] |                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+```
+
 #### Coverage map after remapping
+
+```js
+"statementMap": {
+  "0": {
+    "start": { "line": 13, "column": 9 },
+    "end": { "line": 13, "column": 19 }
+  },
+  "1": {
+    "start": { "line": 13, "column": 4 },
+    "end": { "line": 13, "column": null }
+  },
+  "2": {
+    "start": { "line": 13, "column": 13 },
+    "end": { "line": 13, "column": 19 }
+  },
+  ...
+},
+"branchMap": {
+  "0": {
+    "loc": { "start": { "line": 13, "column": 9 }, "end": { "line": 13, "column": 19 } },
+    "type": "if",
+    "locations": [
+      { 
+        "start": { "line": 13, "column": 9 },
+        "end": { "line": 13, "column": 19 }
+      }
+    ]
+  },
+  "1": {
+    "loc": { "start": { "line": 13, "column": 9 }, "end": { "line": 13, "column": 19 } },
+    "type": "binary-expr",
+    "locations": [
+      {
+        "start": { "line": 13, "column": 9 },
+        "end": { "line": 13, "column": 13 }
+      },
+      {
+        "start": { "line": 13, "column": 9 },
+        "end": { "line": 13, "column": 19 }
+      }
+    ]
+  },
+  ...
+}
+```
+
+```js
+13                          |    <li>{user}</li>
+statementMap["0"]           |         ^^^^^^^^^^
+statementMap["1"]           |    ^
+statementMap["2"]           |             ^^^^^^
+branchMap["0"].locations[0] |         ^^^^^^^^^^
+branchMap["1"].locations[0] |         ^^^^
+branchMap["1"].locations[1] |         ^^^^^^^^^^
+```
