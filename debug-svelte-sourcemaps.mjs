@@ -9,7 +9,14 @@ import { createInstrumenter } from "istanbul-lib-instrument";
 import { createSourceMapStore } from "istanbul-lib-source-maps";
 import { createContext } from "istanbul-lib-report";
 
-import { mkdir, rmIfExists, writeGeneratedFile, writeMappings, writeRemapping } from "./utils.mjs";
+import {
+  mkdir,
+  rmIfExists,
+  writeCoverageRemappings,
+  writeGeneratedFile,
+  writeMappings,
+  writeRemapping,
+} from "./utils.mjs";
 
 // Prepare
 rmIfExists("./coverage");
@@ -77,6 +84,7 @@ console.log("");
  */
 const collectedCoverage = libCoverage.createCoverageMap(globalThis.__coverage__);
 writeGeneratedFile("coverage-pre.json", collectedCoverage);
+writeCoverageRemappings("transpiled", collectedCoverage.fileCoverageFor(filename), transpiled.code);
 
 /*
  * Re-map coverage map of instrumented transpiled JavaScript back to Svelte
@@ -84,6 +92,7 @@ writeGeneratedFile("coverage-pre.json", collectedCoverage);
 const sourceMapStore = createSourceMapStore();
 const coverageMap = await sourceMapStore.transformCoverage(collectedCoverage);
 writeGeneratedFile("coverage-final.json", coverageMap);
+writeCoverageRemappings("sources", coverageMap.fileCoverageFor(path.resolve(filename)), sources);
 
 /*
  * Generate reports

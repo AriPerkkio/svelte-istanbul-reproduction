@@ -93,9 +93,88 @@ ${generatedCodeFrame}
   writeGeneratedFile(`${namePrefix}.remapped.md`, markdown);
 }
 
+export function writeCoverageRemappings(namePrefix, coverageMap, code) {
+  const markdownRowsWithLine = []; // { line: number, content: string }
+
+  const { statementMap, s: statementHits } = coverageMap.data;
+  for (const [key, { start, end }] of Object.entries(statementMap)) {
+    const frame = codeFrameColumns(code, normalizeLocation({ start, end }));
+
+    const content = `
+Statement
+Hit: ${statementHits[key] > 0 ? "Yes ✅" : "No ❌"}
+
+\`\`\`js
+${frame}
+\`\`\`
+`;
+
+    markdownRowsWithLine.push({ line: start.line, content });
+  }
+
+  const { branchMap, b: branchHits } = coverageMap.data;
+
+  for (const [key, { loc }] of Object.entries(branchMap)) {
+    const { start, end } = loc;
+    const frame = codeFrameColumns(code, normalizeLocation({ start, end }));
+
+    const content = `
+Branch
+Hit: ${branchHits[key] > 0 ? "Yes ✅" : "No ❌"}
+
+\`\`\`js
+${frame}
+\`\`\`
+`;
+
+    markdownRowsWithLine.push({ line: start.line, content });
+  }
+
+  const { fnMap, f: fnHits } = coverageMap.data;
+
+  for (const [key, { loc }] of Object.entries(fnMap)) {
+    const { start, end } = loc;
+    const frame = codeFrameColumns(code, normalizeLocation({ start, end }));
+
+    const content = `
+Function
+Hit: ${fnHits[key] > 0 ? "Yes ✅" : "No ❌"}
+
+\`\`\`js
+${frame}
+\`\`\`
+`;
+
+    markdownRowsWithLine.push({ line: start.line, content });
+  }
+
+  const markdownRows = markdownRowsWithLine
+    .sort((a, b) => a.line - b.line)
+    .map((row) => row.content);
+
+  const markdown = markdownRows
+    .map((row, index) => `## ${1 + index} ${row.trim()}`)
+    .join(`${EOL}${EOL}${"_".repeat(80)}${EOL}${EOL}`);
+
+  writeGeneratedFile(`${namePrefix}.coverage-remapped.md`, markdown);
+}
+
 function existsInSources(sources, { start }) {
   const rows = sources.split(EOL);
   const startCharacter = rows[start.line - 1].charAt(start.column - 1);
 
   return startCharacter.length !== 0;
+}
+
+function normalizeLocation({ start, end }) {
+  return {
+    start: {
+      ...start,
+      column: start.column === Infinity ? undefined : start.column,
+    },
+    end: {
+      ...end,
+      column: end.column === Infinity ? undefined : end.column,
+    },
+  };
 }
