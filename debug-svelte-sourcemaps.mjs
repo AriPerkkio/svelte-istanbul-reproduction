@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 
 import * as svelte from "svelte/compiler";
+import * as server from "svelte/internal/server";
 import { JSDOM } from "jsdom";
 import * as reports from "istanbul-reports";
 import libCoverage from "istanbul-lib-coverage";
@@ -24,6 +25,10 @@ rmIfExists("./generated");
 mkdir("./generated");
 globalThis.window = new JSDOM().window;
 globalThis.document = window.document;
+globalThis.requestAnimationFrame = window.requestAnimationFrame;
+globalThis.Node = window.Node;
+globalThis.Element = window.Element;
+globalThis.Text = window.Text;
 
 const filename = "repro.svelte";
 const sources = readFileSync(path.resolve(filename), "utf8");
@@ -36,6 +41,7 @@ console.log("");
 const { js: transpiled } = svelte.compile(sources, {
   filename,
   outputFilename: filename,
+  generate: "server",
   enableSourcemap: true,
 });
 
@@ -76,7 +82,7 @@ console.log("");
  */
 console.log("Running ./generated/instrumented.js");
 const SvelteComponent = (await import("./generated/instrumented.js")).default;
-new SvelteComponent({ target: document.body, props: { users: ["John Doe"] } });
+server.render(SvelteComponent, { props: { users: ["John Doe"] } });
 console.log("");
 
 /*
